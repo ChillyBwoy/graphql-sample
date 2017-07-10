@@ -45,6 +45,31 @@ class ProductUserReview(DjangoObjectType):
         )
 
 
+class AddProductUserReview(graphene.ClientIDMutation):
+    review = graphene.Field(ProductUserReview)
+
+    class Input:
+        user = graphene.ID(required=True)
+        product = graphene.ID(required=True)
+        text = graphene.String(required=True)
+        rating = graphene.Int(required=True)
+
+    @classmethod
+    def mutate_and_get_payload(cls, input, context, info):
+        _, product_id = relay.Node.from_global_id(input.get('product'))
+        _, user_id = relay.Node.from_global_id(input.get('user'))
+        rating = input.get('rating')
+        text = input.get('text')
+
+        inst = ProductUserReviewModel.objects.create(
+            product_id=int(product_id),
+            user_id=int(user_id),
+            rating=int(rating),
+            text=text)
+
+        return AddProductUserReview(review=inst)
+
+
 class Query(graphene.ObjectType):
     user = relay.Node.Field(User)
     all_users = DjangoConnectionField(User)
@@ -59,4 +84,8 @@ class Query(graphene.ObjectType):
     all_reviews = DjangoConnectionField(ProductUserReview)
 
 
-schema = graphene.Schema(query=Query)
+class Mutations(graphene.ObjectType):
+    add_product_user_review = AddProductUserReview.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutations)
