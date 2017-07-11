@@ -1,0 +1,188 @@
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+input AddProductUserReviewInput {
+  user: ID!
+  product: ID!
+  text: String!
+  rating: Int!
+  clientMutationId: String
+}
+
+type AddProductUserReviewPayload {
+  review: ProductUserReview
+  clientMutationId: String
+}
+
+type Category implements Node {
+  # The ID of the object.
+  id: ID!
+  name: String!
+  productSet(before: String, after: String, first: Int, last: Int): ProductConnection
+}
+
+type CategoryConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryEdge]!
+}
+
+type CategoryEdge {
+  # The item at the end of the edge
+  node: Category
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# The `DateTime` scalar type represents a DateTime
+# value as specified by
+# [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+scalar DateTime
+
+type Mutations {
+  addProductUserReview(input: AddProductUserReviewInput!): AddProductUserReviewPayload
+}
+
+# An object with an ID
+interface Node {
+  # The ID of the object.
+  id: ID!
+}
+
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Product implements Node {
+  # The ID of the object.
+  id: ID!
+  name: String!
+  description: String!
+  price: Int!
+  category: Category!
+  reviews(before: String, after: String, first: Int, last: Int): ProductConnection
+  productuserreviewSet(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
+}
+
+type ProductConnection {
+  pageInfo: PageInfo!
+  edges: [ProductEdge]!
+}
+
+type ProductEdge {
+  # The item at the end of the edge
+  node: Product
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ProductUserReview implements Node {
+  # The ID of the object.
+  id: ID!
+  product: Product!
+  user: User!
+  rating: ProductUserReviewRating!
+  text: String!
+  ratingAsStars: String
+}
+
+type ProductUserReviewConnection {
+  pageInfo: PageInfo!
+  edges: [ProductUserReviewEdge]!
+}
+
+type ProductUserReviewEdge {
+  # The item at the end of the edge
+  node: ProductUserReview
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum ProductUserReviewRating {
+  # *
+  A_1
+
+  # **
+  A_2
+
+  # ***
+  A_3
+
+  # ****
+  A_4
+
+  # *****
+  A_5
+}
+
+type Query {
+  # The ID of the object
+  user(id: ID!): User
+  allUsers(before: String, after: String, first: Int, last: Int): UserConnection
+
+  # The ID of the object
+  category(id: ID!): Category
+  allCategories(before: String, after: String, first: Int, last: Int): CategoryConnection
+
+  # The ID of the object
+  product(id: ID!): Product
+  allProducts(before: String, after: String, first: Int, last: Int): ProductConnection
+
+  # The ID of the object
+  review(id: ID!): ProductUserReview
+  allReviews(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
+}
+
+type User implements Node {
+  # The ID of the object.
+  id: ID!
+  password: String!
+  lastLogin: DateTime
+
+  # Designates that this user has all permissions without explicitly assigning them.
+  isSuperuser: Boolean!
+
+  # Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+
+  # Designates whether the user can log into this admin site.
+  isStaff: Boolean!
+
+  # Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+  isActive: Boolean!
+  dateJoined: DateTime!
+  groups(before: String, after: String, first: Int, last: Int): UserConnection
+  userPermissions(before: String, after: String, first: Int, last: Int): UserConnection
+  productuserreviewSet(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
+  productSet(before: String, after: String, first: Int, last: Int): ProductConnection
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+}
+
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
+}

@@ -1,0 +1,24 @@
+{
+  "name": "graphql-sample",
+  "version": "1.0.0",
+  "description": "## Installation:",
+  "main": "schema.js",
+  "dependencies": {
+    "graphql": "^0.10.3",
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChillyBwoy/graphql-sample.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChillyBwoy/graphql-sample/issues"
+  },
+  "homepage": "https://github.com/ChillyBwoy/graphql-sample#readme"
+}
