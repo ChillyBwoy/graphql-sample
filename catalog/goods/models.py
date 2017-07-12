@@ -12,8 +12,8 @@ class ProductUserReview(models.Model):
     )
     product = models.ForeignKey('Product')
     user = models.ForeignKey('auth.User')
-    rating = models.PositiveSmallIntegerField('rating', choices=RATING_CHOICES,
-                                              default=RATING_CHOICES_DEFAULT)
+    rating = models.PositiveSmallIntegerField(
+        'rating', choices=RATING_CHOICES, default=RATING_CHOICES_DEFAULT)
     text = models.TextField('text review')
 
 
@@ -33,4 +33,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-

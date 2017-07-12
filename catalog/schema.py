@@ -35,6 +35,11 @@ class Product(DjangoObjectType):
         )
 
 
+class DefaultProduct(DjangoObjectType):
+    class Meta:
+        model = ProductModel
+
+
 class ProductUserReview(DjangoObjectType):
     rating_as_stars = graphene.String(source='get_rating_display')
 
@@ -82,6 +87,29 @@ class Query(graphene.ObjectType):
 
     review = relay.Node.Field(ProductUserReview)
     all_reviews = DjangoConnectionField(ProductUserReview)
+
+    product_list = graphene.List(DefaultProduct)
+
+    custom_product_list = graphene.List(
+        DefaultProduct, price__gte=graphene.Argument(graphene.Int),
+        price__lte=graphene.Argument(graphene.Int))
+
+    @graphene.resolve_only_args
+    def resolve_product_list(self):
+        return ProductModel.objects.all()
+
+    def resolve_custom_product_list(self, args, context, info):
+        qs = ProductModel.objects.all()
+        price__gte = args.get('price__gte')
+        price__lte = args.get('price__lte')
+
+        if price__gte:
+            qs = qs.filter(price__gte=price__gte)
+
+        if price__lte:
+            qs = qs.filter(price__lte=price__lte)
+
+        return qs
 
 
 class Mutations(graphene.ObjectType):

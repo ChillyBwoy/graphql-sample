@@ -20,7 +20,7 @@ type Category implements Node {
   # The ID of the object.
   id: ID!
   name: String!
-  productSet(before: String, after: String, first: Int, last: Int): ProductConnection
+  productSet: [DefaultProduct]
 }
 
 type CategoryConnection {
@@ -40,6 +40,16 @@ type CategoryEdge {
 # value as specified by
 # [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 scalar DateTime
+
+type DefaultProduct {
+  id: ID!
+  name: String!
+  description: String!
+  price: Int!
+  category: Category!
+  reviews: [DefaultProduct]
+  productuserreviewSet(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
+}
 
 type Mutations {
   addProductUserReview(input: AddProductUserReviewInput!): AddProductUserReviewPayload
@@ -72,7 +82,7 @@ type Product implements Node {
   description: String!
   price: Int!
   category: Category!
-  reviews(before: String, after: String, first: Int, last: Int): ProductConnection
+  reviews: [DefaultProduct]
   productuserreviewSet(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
 }
 
@@ -92,7 +102,7 @@ type ProductEdge {
 type ProductUserReview implements Node {
   # The ID of the object.
   id: ID!
-  product: Product!
+  product: DefaultProduct!
   user: User!
   rating: ProductUserReviewRating!
   text: String!
@@ -145,6 +155,8 @@ type Query {
   # The ID of the object
   review(id: ID!): ProductUserReview
   allReviews(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
+  productList: [DefaultProduct]
+  customProductList(price_Gte: Int, price_Lte: Int): [DefaultProduct]
 }
 
 type User implements Node {
@@ -171,7 +183,7 @@ type User implements Node {
   groups(before: String, after: String, first: Int, last: Int): UserConnection
   userPermissions(before: String, after: String, first: Int, last: Int): UserConnection
   productuserreviewSet(before: String, after: String, first: Int, last: Int): ProductUserReviewConnection
-  productSet(before: String, after: String, first: Int, last: Int): ProductConnection
+  productSet: [DefaultProduct]
 }
 
 type UserConnection {
