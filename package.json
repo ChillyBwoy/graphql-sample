@@ -4,6 +4,8 @@
   "description": "## Installation:",
   "main": "schema.js",
   "dependencies": {
+    "express": "^4.15.3",
+    "express-graphql": "^0.6.6",
     "graphql": "^0.10.3",
     "isomorphic-fetch": "^2.2.1"
   },
