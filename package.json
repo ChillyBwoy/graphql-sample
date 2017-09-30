@@ -6,16 +6,17 @@
   "dependencies": {
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
+    "get-graphql-schema": "^2.1.1",
     "graphql": "^0.10.3",
     "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChillyBwoy/graphql-sample.git"
+  },
+  "scripts": {
+    "schema": "npx get-graphql-schema http://localhost:8000/graphql/ > schema.graphql"
   },
   "author": "",
   "license": "ISC",

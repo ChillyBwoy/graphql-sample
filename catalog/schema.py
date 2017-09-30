@@ -41,7 +41,8 @@ class DefaultProduct(DjangoObjectType):
 
 
 class ProductUserReview(DjangoObjectType):
-    rating_as_stars = graphene.String(source='get_rating_display')
+    rating_as_stars = graphene.String(
+        source='get_rating_display', required=True)
 
     class Meta:
         model = ProductUserReviewModel

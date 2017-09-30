@@ -106,7 +106,7 @@ type ProductUserReview implements Node {
   user: User!
   rating: ProductUserReviewRating!
   text: String!
-  ratingAsStars: String
+  ratingAsStars: String!
 }
 
 type ProductUserReviewConnection {
@@ -198,3 +198,4 @@ type UserEdge {
   # A cursor for use in pagination
   cursor: String!
 }
+
